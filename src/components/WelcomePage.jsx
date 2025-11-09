@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Replace this with your actual image URL (or your uploaded image later)
-const illustrationUrl = '../../public/back.png';
+const illustrationUrl = 'back.png';
 
 const WelcomePage = ({ onGetStarted }) => {
   return (
@@ -45,3 +45,4 @@ const WelcomePage = ({ onGetStarted }) => {
 };
 
 export default WelcomePage;
+
