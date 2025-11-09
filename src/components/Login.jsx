@@ -6,6 +6,9 @@ const loginTopImageUrl = '/back.png';
 // Background image for page
 const backgroundImageUrl = 'https://i.imgur.com/8aM0rMa.png';
 
+// ✅ 1. Get the API URL from environment variables
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Login = ({ role, onBack, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -63,7 +66,8 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
       const userName = email.split('@')[0];
       const userRole = role;
 
-      const response = await fetch("http://localhost:5000/api/request", {
+      // ✅ 2. Use the new API_URL variable
+      const response = await fetch(`${API_URL}/request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, email, userName, userRole }),
@@ -101,7 +105,8 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
     try {
       const userId = "507f1f77bcf86cd799439011";
 
-      const response = await fetch("http://localhost:5000/api/verify", {
+      // ✅ 3. Use the new API_URL variable
+      const response = await fetch(`${API_URL}/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ otpId, otp: otpString, userId }),
