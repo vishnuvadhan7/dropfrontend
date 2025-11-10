@@ -1,8 +1,13 @@
 import React from 'react';
 
-// Replace this with your actual image URL (or your uploaded image later)
+// Replace these with your actual image URLs
 const loginTopImageUrl = '/back.png';
 const backgroundImageUrl = 'https://i.imgur.com/8aM0rMa.png';
+
+// ✅ FIX: You MUST define illustrationUrl
+const illustrationUrl = '/back.png'; 
+// or: const illustrationUrl = 'https://i.imgur.com/L3Pq8k6.png';
+
 const WelcomePage = ({ onGetStarted }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#e0f2f7]">
@@ -10,8 +15,8 @@ const WelcomePage = ({ onGetStarted }) => {
       {/* Illustration ABOVE the card */}
       <div className="mb-5 -mt-38">
         <img 
-          src={illustrationUrl} 
-          alt="Campus Delivery Illustration" 
+          src={illustrationUrl}
+          alt="Campus Delivery Illustration"
           className="w-48 h-auto mx-auto drop-shadow-lg"
         />
       </div>
@@ -45,6 +50,3 @@ const WelcomePage = ({ onGetStarted }) => {
 };
 
 export default WelcomePage;
-
-
-
