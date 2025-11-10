@@ -2,7 +2,7 @@ import React from 'react';
 
 // Replace this with your actual image URL (or your uploaded image later)
 const loginTopImageUrl = '/back.png';
-
+const backgroundImageUrl = 'https://i.imgur.com/8aM0rMa.png';
 const WelcomePage = ({ onGetStarted }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#e0f2f7]">
@@ -45,5 +45,6 @@ const WelcomePage = ({ onGetStarted }) => {
 };
 
 export default WelcomePage;
+
 
 
