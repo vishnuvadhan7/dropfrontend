@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 // Image above the card
 const loginTopImageUrl = '/back.png';
 
-// Background image for page
+// ✅ (Optional) Background image - not used in this layout
 const backgroundImageUrl = 'https://i.imgur.com/8aM0rMa.png';
 
-// ✅ 1. Get the API URL from environment variables
-const API_URL = import.meta.env.VITE_API_URL;
+// ✅ 1. Get API URL from Vercel env or use fallback
+const API_URL = import.meta.env.VITE_API_URL || "https://dropbackend.onrender.com/api";
+
+console.log("✅ API URL Loaded =>", API_URL); // Debug
 
 const Login = ({ role, onBack, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
@@ -19,13 +21,11 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
   const [messageType, setMessageType] = useState('');
   const [otpId, setOtpId] = useState(null);
 
-  // Timer
+  // ✅ Timer logic
   useEffect(() => {
     let interval = null;
     if (step === 'otp' && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((t) => t - 1);
-      }, 1000);
+      interval = setInterval(() => setTimer((t) => t - 1), 1000);
     }
     return () => clearInterval(interval);
   }, [step, timer]);
@@ -33,27 +33,29 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
   const formatTime = () =>
     `${Math.floor(timer / 60)}:${(timer % 60).toString().padStart(2, '0')}`;
 
-  // OTP logic
+  // ✅ OTP input logic
   const handleOtpChange = (element, index) => {
     if (isNaN(element.value)) return;
+
     const newOtp = [...otp];
     newOtp[index] = element.value;
     setOtp(newOtp);
 
-    if (element.value !== '' && index < 5) {
+    if (element.value && index < 5) {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
   };
 
   const handleOtpBackspace = (element, index) => {
-    if (element.value === '' && index > 0) {
+    if (!element.value && index > 0) {
       document.getElementById(`otp-input-${index - 1}`).focus();
     }
   };
 
-  // SEND OTP
+  // ✅ SEND OTP
   const sendOtp = async (e) => {
     e.preventDefault();
+
     if (!email) {
       showMessage('Please enter your email', 'error');
       return;
@@ -62,11 +64,10 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
     setIsLoading(true);
 
     try {
-      const userId = "507f1f77bcf86cd799439011";
+      const userId = "507f1f77bcf86cd799439011"; // static for now
       const userName = email.split('@')[0];
       const userRole = role;
 
-      // ✅ 2. Use the new API_URL variable
       const response = await fetch(`${API_URL}/request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,11 +91,12 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
     }
   };
 
-  // VERIFY OTP
+  // ✅ VERIFY OTP
   const verifyOtp = async (e) => {
     e.preventDefault();
 
     const otpString = otp.join('');
+
     if (otpString.length !== 6) {
       showMessage("Please enter a valid 6-digit OTP", "error");
       return;
@@ -105,7 +107,6 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
     try {
       const userId = "507f1f77bcf86cd799439011";
 
-      // ✅ 3. Use the new API_URL variable
       const response = await fetch(`${API_URL}/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,9 +118,7 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
       if (response.ok) {
         showMessage("Login successful!", "success");
 
-        setTimeout(() => {
-          onLoginSuccess();
-        }, 800);
+        setTimeout(() => onLoginSuccess(), 800);
       } else {
         showMessage(data.error || data.message, "error");
       }
@@ -135,7 +134,6 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
       showMessage(`Please wait ${formatTime()} before resending`, "error");
       return;
     }
-
     console.log("Resend OTP clicked");
   };
 
@@ -153,8 +151,7 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#e0f2f7]">
 
-
-      {/* ✅ Image ABOVE Card */}
+      {/* ✅ Top Illustration */}
       <div className="mb-5 -mt-38">
         <img
           src={loginTopImageUrl}
@@ -171,7 +168,7 @@ const Login = ({ role, onBack, onLoginSuccess }) => {
           <p className="text-gray-600 text-lg">{capitalize(role)} Login</p>
         </div>
 
-        {/* ✅ Message */}
+        {/* ✅ Feedback Message */}
         {message && (
           <div
             className={`mb-4 p-3 text-center rounded-lg ${
